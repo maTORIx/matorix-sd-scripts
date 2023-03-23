@@ -2,10 +2,7 @@ import os
 import sys
 import shutil
 from glob import glob
-
-BLIP_BATCH_SIZE = 8
-SD_SCRIPTS_PATH = "C:\\Users\\matorix\\src\\github.com\\kohya-ss\\sd-scripts"
-DEEPDANBOORU_PROJECT_PATH = "C:\\Users\\matorix\\src\\github.com\\kohya-ss\\DeepDanbooru\\deepdanbooru-v3-20211112-sgd-e28"
+from config import *
 
 BLIP_SCRIPT_PATH = os.path.join(SD_SCRIPTS_PATH, "finetune", "make_captions.py")
 CAPTION_SCRIPT_PATH = os.path.join(SD_SCRIPTS_PATH, "finetune", "merge_captions_to_metadata.py")
@@ -46,15 +43,18 @@ def clearning_captions(dir):
     save_json_path = os.path.join(dir, "meta_clean.json")
     os.system(f'python {CLEANING_SCRIPT_PATH} {load_json_path} {save_json_path}')
 
-def main():
+def tagimg(src, dst):
     os.chdir(SD_SCRIPTS_PATH)
-    src = os.path.abspath(sys.argv[1])
-    dst = os.path.abspath(sys.argv[2])
     copy_images(src, dst)
     caption_blip(dst)
     caption_deepdanbooru(dst)
     merge_captions(dst)
     clearning_captions(dst)
+
+def main():
+    src = os.path.abspath(sys.argv[1])
+    dst = os.path.abspath(sys.argv[2])
+    tagimg(src, dst)
 
 if __name__ == '__main__':
     main()
