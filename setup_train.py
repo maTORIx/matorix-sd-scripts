@@ -194,7 +194,8 @@ batch_size = {values["batch_size"]}
 --prior_loss_weight=1.0
 --max_train_steps={values["steps"]}
 --learning_rate={values["learning_rate"]}
---optimizer_type="AdamW8bit"
+--optimizer_type="AdaFactor"
+--optimizer_args "relative_step=True" "scale_parameter=True" "warmup_init=True"
 --mixed_precision="fp16"
 --cache_latents
 --gradient_checkpointing
