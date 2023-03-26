@@ -1,0 +1,50 @@
+{
+    "sd_scripts_path": "..\\sd-scripts",
+    "deepdanbooru_project_path": "..\\DeepDanbooru\\deepdanbooru-v3-20211112-sgd-e28",
+    "output_dir": ".\\outputs",
+    "save_model_as": "safetensors",
+    "training_default_args": {
+        "learning-rate": 1e-4,
+        "batch-size": 4,
+        "steps": 1000,
+        "optimizer": "Adafactor",
+        "optimizer_args": [
+            "relative_step=True",
+            "scale_parameter=True",
+            "warmup_init=True"
+        ],
+        "train_dataset_iter_times": 10,
+        "regularization_dataset_iter_times": 1,
+        "training_options": [
+            "--prior_loss_weight=1.0",
+            "--mixed_precision='fp16'",
+            "--gradient_checkpointing",
+            "--network_module=networks.lora",
+            "--color_aug",
+            "--network_dim=128",
+            "--network_alpha=128",
+            "--lr_scheduler=cosine_with_restarts",
+            "--lr_scheduler_num_cycles=4",
+            "--shuffle_caption",
+            "--caption_dropout_rate=0.05",
+            "--lr_warmup_steps=500"
+        ]
+    },
+    "sample": {
+        "default_prompt": "best quality, masterpiece",
+        "default_negative_prompt": "low quality, bad quality",
+        "sampler": "ddim",
+        "interval_steps": 500
+    },
+    "tagger": {
+        "blip_batch_size": 4,
+        "caption_batch_size": 4
+    },
+    "generator": {
+        "batch_size": 4,
+        "sampler": "ddim",
+        "steps": 20,
+        "default_prompt": "",
+        "default_negative_prompt": ""
+    }
+}

@@ -1,0 +1,20 @@
+[general]
+enable_bucket = {{ "true" if values["enable_bucket"] else "false" }}
+
+[[datasets]]
+resolution = 512
+batch_size = {{ values["batch_size"] }}
+
+    [[datasets.subsets]]
+    image_dir = '{{ values["train_img_dst"] }}'
+    num_repeats = {{ CONFIG["training_default_args"]["train_dataset_iter_times"] }}
+{% if values["identifier"] != "" %}    class_tokens = '{{ values["identifier"] }} {{ values["class"] }}'
+{% else %}    caption_extension = '.caption'
+{% endif %}
+{% if values["reg_count"] > 0 %}
+    [[datasets.subsets]]
+    is_reg = true
+    image_dir = '{{ values["reg_img_dst"] }}'
+    class_tokens = '{{ values["class"] }}'
+    num_repeats = {{ CONFIG["training_default_args"]["regularization_dataset_iter_times"] }}
+{% endif %}
