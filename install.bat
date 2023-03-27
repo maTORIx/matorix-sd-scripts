@@ -9,6 +9,7 @@ if not "%DIR_NAME%"=="%TARGET_DIR%" (
 )
 
 call venv/Scripts/activate
+pip install onnxruntime
 cd ..
 if not exist "matorix-sd-scripts" git clone https://github.com/matorix/matorix-sd-scripts
 cd matorix-sd-scripts
