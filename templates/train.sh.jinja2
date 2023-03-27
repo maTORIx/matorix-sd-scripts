@@ -1,3 +1,5 @@
-cd {{ SD_SCRIPTS_PATH }}
+#!/bin/bash
+
+cd {{ CONFIG["sd-scripts-path"] }}
 source ./venv/bin/activate
 {{ command }}
