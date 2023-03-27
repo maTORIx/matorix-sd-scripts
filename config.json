@@ -17,7 +17,7 @@
         "regularization_dataset_iter_times": 1,
         "training_options": [
             "--prior_loss_weight=1.0",
-            "--mixed_precision='fp16'",
+            "--mixed_precision=fp16",
             "--gradient_checkpointing",
             "--network_module=networks.lora",
             "--color_aug",
