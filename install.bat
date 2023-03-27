@@ -1,9 +1,12 @@
 set "FILE_PATH=%~dp0"
-set "DIR_NAME=%~n0"
+set "DIR_PATH=%~dp0"
+set "DIR_PATH=%DIR_PATH:~0,-1%"
+for %%i in ("%DIR_PATH%") do set "DIR_NAME=%%~nxi"
 set "TARGET_DIR=sd-scripts"
 
-REM ディレクトリ名が"sd-scripts"でない場合、エラーをはいて終了
 if not "%DIR_NAME%"=="%TARGET_DIR%" (
+  echo %DIR_NAME%
+  echo %TARGET_DIR%
   echo Error: The script must be run from the "%TARGET_DIR%" directory.
   exit /b 1
 )
