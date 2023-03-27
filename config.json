@@ -4,8 +4,8 @@
     "output_dir": ".\\outputs",
     "save_model_as": "safetensors",
     "training_default_args": {
-        "learning-rate": 1e-4,
-        "batch-size": 4,
+        "learning_rate": 1e-4,
+        "batch_size": 2,
         "steps": 1000,
         "optimizer": "Adafactor",
         "optimizer_args": [
