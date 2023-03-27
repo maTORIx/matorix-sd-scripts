@@ -5,12 +5,11 @@ for %%i in ("%DIR_PATH%") do set "DIR_NAME=%%~nxi"
 set "TARGET_DIR=sd-scripts"
 
 if not "%DIR_NAME%"=="%TARGET_DIR%" (
-  echo %DIR_NAME%
-  echo %TARGET_DIR%
   echo Error: The script must be run from the "%TARGET_DIR%" directory.
   exit /b 1
 )
 
+cd %DIR_PATH%
 call venv/Scripts/activate
 pip install onnxruntime
 cd ..
