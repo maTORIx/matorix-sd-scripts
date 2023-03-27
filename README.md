@@ -1,18 +1,37 @@
 # matorix-sd-scripts
-https://github.com/kohya-ss/sd-scripts に入れ込む学習用のもろもろをいい感じに全部やってくれるUIです。
-学習用画像のデータさえ用意すれば、タグ付け、正則化画像の生成、tomlファイルの記述、実行時のスクリプトの記述まで、学習に必要なことは基本的に全部やってくれます。
-簡単にするために、様々なパラメータを省いているので、詳細なチューニングが必要な場合は、適宜tomlやスクリプトを改変することを推奨します。
+https://github.com/kohya-ss/sd-scripts における前処理を行うためのスクリプトです。
 
-## 使い方
+- 画像のタグ付け(`waifu diffusion 1.4 tagger`)
+- 正則化画像生成(透明 or 任意のモデルを用いた画像生成)
+- tomlファイル出力
+- 学習用コマンドの出力
+- 学習用実行ファイル(`.bat` and `.sh`)
 
-1. kohyaさんのsd-scripts用に用意している仮想環境を利用。
-2. READMEにしたがって、DeepDanbooruを入れる。(deepdanbooruコマンドにアクセスできる状態に)
-3. config.pyのパスを変更。SD_SCRIPTS_PATHとDEEPDANBOORU_PROJECT_PATHさえ変更すれば動くと思います。
-4. `python setup_train.py`
-5. UIでパラメータを入力し、Runボタンを押す
-6. 実行状態はコマンドラインに流れます。
-7. 終了すると、UIが閉じます
+上記の処理を一括で行います。
 
-"pip install onnxruntime"
+これにより、出力されたbatファイルを実行するだけでLoRAの学習を行うことができます。
+
+## Easy Install
+https://raw.githubusercontent.com/maTORIx/matorix-sd-scripts/master/install.bat
+
+URLを開いて、右クリックのメニューから「名前をつけて保存」を選択してください。
+
+つぎに、このファイルを`sd-scripts`のディレクトリ直下に移動してください。
+
+最後に、`install.bat`を実行します。
+
+これでインストールは完了です。
+
+`start.bat`から起動できます。
+
+## Install
+```
+$ ../path/to/sd-scripts/venv/Scripts/activate
+$ git clone https://github.com/matorix/matorix-sd-scripts
+$ cd matorix-sd-scripts
+$ pip install onnxruntime
+$ ./setup.bat
+$ ./start.bat
+```
 
 おわり。
