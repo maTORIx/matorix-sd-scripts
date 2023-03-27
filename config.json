@@ -6,7 +6,7 @@
     "training_default_args": {
         "learning_rate": 1e-4,
         "batch_size": 2,
-        "steps": 1000,
+        "steps": 10000,
         "optimizer": "Adafactor",
         "optimizer_args": [
             "relative_step=True",
