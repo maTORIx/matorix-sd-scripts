@@ -146,13 +146,23 @@ def run():
     with open(values["toml_path"], "w", encoding="utf-8") as f:
         f.write(toml)
 
-    # generate train.sh
-    with open(os.path.join(BASE_DIR, "templates", "train.sh.jinja2"), "r") as f:
+    # generate command.txt
+    with open(os.path.join(BASE_DIR, "templates", "command.txt.jinja2"), "r") as f:
         template = jinja2.Template(f.read())
-    sh = template.render({"values": values, "CONFIG": CONFIG, "PYTHON_PATH": sys.base_prefix})
-    sh = (" ").join([line.strip() for line in sh.splitlines()])
-    with open(os.path.join(values["images_dst"], "train.sh"), "w", encoding="utf-8") as f:
-        f.write(sh)
+    command = template.render({"values": values, "CONFIG": CONFIG})
+    command = (" ").join([line.strip() for line in command.splitlines()])
+    with open(os.path.join(values["images_dst"], "command.txt"), "w", encoding="utf-8") as f:
+        f.write(command)
+    
+    # generate sctipts
+    scripts_templates = ["train.sh.jinja2", "train.bat.jinja2"]
+    for template_name in scripts_templates:
+        script_name = os.path.splitext(template_name)[0]
+        with open(os.path.join(BASE_DIR, "templates", template_name), "r") as f:
+            template = jinja2.Template(f.read())
+        script = template.render({"values": values, "CONFIG": CONFIG, "command": command})
+        with open(os.path.join(values["images_dst"], script_name), "w", encoding="utf-8") as f:
+            f.write(script)
     
     # generate prompt for generate sample
     if values["identifier"] != "":
