@@ -1,6 +1,5 @@
 {
     "sd_scripts_path": "..\\sd-scripts",
-    "deepdanbooru_project_path": "..\\DeepDanbooru\\deepdanbooru-v3-20211112-sgd-e28",
     "output_dir": ".\\outputs",
     "save_model_as": "safetensors",
     "training_default_args": {

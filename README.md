@@ -13,4 +13,6 @@ https://github.com/kohya-ss/sd-scripts に入れ込む学習用のもろもろ�
 6. 実行状態はコマンドラインに流れます。
 7. 終了すると、UIが閉じます
 
+"pip install onnxruntime"
+
 おわり。

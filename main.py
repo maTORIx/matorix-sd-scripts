@@ -88,8 +88,6 @@ reg_count_entry.grid(row=10, column=1)
 run_options_label = tk.Label(root, text="Run Options")
 run_options_label.grid(row=11, column=0, sticky="w")
 
-
-
 def get_values():
     values = {
         "model_name": model_output_name_entry.get(),

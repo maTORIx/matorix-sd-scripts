@@ -2,7 +2,9 @@ import os
 import sys
 import shutil
 from glob import glob
+import tqdm
 from utils.config import CONFIG
+from utils import wd14tagger
 
 SD_SCRIPTS_PATH = CONFIG["sd_scripts_path"]
 BLIP_SCRIPT_PATH = os.path.join(SD_SCRIPTS_PATH, "finetune", "make_captions.py")
@@ -28,9 +30,15 @@ def caption_blip(dir):
     # exec shell command
     os.system(f'python {BLIP_SCRIPT_PATH} --batch_size {CONFIG["tagger"]["blip_batch_size"]} "{dir}"')
 
-def caption_deepdanbooru(dir):
-    # exec shell command
-    os.system(f'deepdanbooru evaluate "{dir}" --project-path {CONFIG["deepdanbooru_project_path"]} --allow-folder --save-txt')
+def caption_wd14(dir):
+    print("Generating captions with WD14 model")
+    images = find_images(dir)
+    for image_path in tqdm.tqdm(images):
+        tags = wd14tagger.generate_tags(image_path)
+        caption_path = os.path.join(dir, os.path.splitext(os.path.basename(image_path))[0] + ".txt")
+        with open(caption_path, "w") as f:
+            f.write(", ".join(tags))
+
 
 def merge_captions(dir):
     # exec shell command
@@ -48,7 +56,7 @@ def tagimg(src, dst):
     os.chdir(SD_SCRIPTS_PATH)
     copy_images(src, dst)
     caption_blip(dst)
-    caption_deepdanbooru(dst)
+    caption_wd14(dst)
     merge_captions(dst)
     clearning_captions(dst)
 
@@ -56,6 +64,3 @@ def main():
     src = os.path.abspath(sys.argv[1])
     dst = os.path.abspath(sys.argv[2])
     tagimg(src, dst)
-
-if __name__ == '__main__':
-    main()
