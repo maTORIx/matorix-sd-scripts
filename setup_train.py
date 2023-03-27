@@ -41,19 +41,19 @@ train_label.grid(row=3, column=0, sticky="w")
 
 steps_label = tk.Label(root, text="Steps")
 steps_label.grid(row=4, column=0, sticky="w")
-steps_var = tk.IntVar(value=25000)
+steps_var = tk.IntVar(value=CONFIG["training_default_args"]["steps"])
 steps_entry = tk.Entry(root, textvariable=steps_var)
 steps_entry.grid(row=4, column=1)
 
 batch_label = tk.Label(root, text="Batch Size")
 batch_label.grid(row=5, column=0, sticky="w")
-batch_var = tk.IntVar(value=4)
+batch_var = tk.IntVar(value=CONFIG["training_default_args"]["batch_size"])
 batch_entry = tk.Entry(root, textvariable=batch_var)
 batch_entry.grid(row=5, column=1)
 
 learning_rate_label = tk.Label(root, text="Learning Rate")
 learning_rate_label.grid(row=6, column=0, sticky="w")
-learning_rate_var = tk.DoubleVar(value=1e-4)
+learning_rate_var = tk.DoubleVar(value=CONFIG["training_default_args"]["learning_rate"])
 learning_rate_entry = tk.Entry(root, textvariable=learning_rate_var)
 learning_rate_entry.grid(row=6, column=1)
 
@@ -167,9 +167,8 @@ def run():
     with open(os.path.join(values["sample_prompt_path"]), "w", encoding="utf-8") as f:
         f.write(prompt)
     
-    print("matorix-sd-scripts task finished !")
-    
     # exit app
+    print("matorix-sd-scripts task finished !")
     root.destroy()
 
 # run button
