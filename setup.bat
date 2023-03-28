@@ -1,7 +1,7 @@
 cd /d %~dp0
 
 @REM Download Waifu Diffusion repo, model and tags
-if not exist "SW_CV_ModelZoo" git clone https://github.com/SmilingWolf/SW-CV-ModelZoo -o SW_CV_ModelZoo
+if not exist "SW_CV_ModelZoo" git clone https://github.com/SmilingWolf/SW-CV-ModelZoo SW_CV_ModelZoo
 if not exist "models" mkdir models
 cd models
 if not exist "wd14" mkdir wd14
