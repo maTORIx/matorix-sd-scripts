@@ -4,16 +4,18 @@
     "save_model_as": "safetensors",
     "training_default_args": {
         "learning_rate": 1e-4,
-        "batch_size": 3,
+        "batch_size": 2,
         "steps": 5000,
         "train_dataset_iter_times": 10,
         "regularization_dataset_iter_times": 1,
-        "fliplr_aug": true,
+        "fliplr": true,
         "color_aug": true,
         "random_crop": false,
         "shuffle_caption": true,
         "caption_dropout_rate": 0.05,
         "xformers": true,
+        "network": "LoRA",
+        "optimizer": "Adafactor",
         "options": [
             "--prior_loss_weight=1.0",
             "--mixed_precision=fp16",
@@ -56,21 +58,29 @@
         },
         "optimizers": {
             "Adafactor": {
-                "args": [
-                    "relative_step=True",
-                    "scale_parameter=True",
-                    "warmup_init=True"
-                ],
                 "options": [
+                    "--optimizer_type=Adafactor",
+                    "--optimizer_args='relative_step=True' 'scale_parameter=True' 'warmup_init=True'",
                     "--lr_scheduler=cosine_with_restarts",
                     "--lr_scheduler_num_cycles=4",
                     "--lr_warmup_steps=500"
                 ]
             },
-            "AdamW8bit": {
-                "args": [],
+            "AdamW": {
                 "options": [
+                    "--optimizer_type=AdamW",
                     "--lr_scheduler=cosine_with_restarts"
+                ]
+            },
+            "AdamW8bit": {
+                "options": [
+                    "--optimizer_type=AdamW8bit",
+                    "--lr_scheduler=cosine_with_restarts"
+                ]
+            },
+            "Lion": {
+                "options": [
+                    "--optimizer_type=Lion"
                 ]
             }
         },

@@ -1,0 +1,3 @@
+onnxruntime
+lion-pytorch
+lycoris_lora
