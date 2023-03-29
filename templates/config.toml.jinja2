@@ -9,7 +9,7 @@ batch_size = {{ values["batch_size"] }}
     image_dir = '{{ values["train_img_dst"] }}'
     num_repeats = {{ CONFIG["training_default_args"]["train_dataset_iter_times"] }}
 {% if values["identifier"] != "" %}    class_tokens = '{{ values["identifier"] }} {{ values["class"] }}'
-{% else %}    caption_extension = '.caption'
+{% else %}    caption_extension = '.txt'
 {% endif %}
 {% if values["reg_count"] > 0 %}
     [[datasets.subsets]]
