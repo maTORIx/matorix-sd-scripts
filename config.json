@@ -60,7 +60,7 @@
             "Adafactor": {
                 "options": [
                     "--optimizer_type=Adafactor",
-                    "--optimizer_args=\"relative_step=True\" \"scale_parameter=True\" \"warmup_init=True\"",
+                    "--optimizer_args \"relative_step=True\" \"scale_parameter=True\" \"warmup_init=True\"",
                     "--lr_scheduler=cosine_with_restarts",
                     "--lr_scheduler_num_cycles=4",
                     "--lr_warmup_steps=500"
