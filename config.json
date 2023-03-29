@@ -36,7 +36,7 @@
                     "--network_module=networks.lora",
                     "--network_dim=64",
                     "--network_alpha=1",
-                    "--network_args='conv_div=64' 'conv_alpha=1'"
+                    "--network_args \"conv_div=64\" \"conv_alpha=1\""
                 ]
             },
             "LoHA": {
@@ -44,7 +44,7 @@
                     "--network_module=lycoris.kohya",
                     "--network_dim=32",
                     "--network_alpha=1",
-                    "--network_args='conv_div=32' 'conv_alpha=1' 'algo=loha'"
+                    "--network_args \"conv_div=32\" \"conv_alpha=1\" \"algo=loha\""
                 ]
             },
             "LoCon": {
@@ -52,7 +52,7 @@
                     "--network_module=lycoris.kohya",
                     "--network_dim=64",
                     "--network_alpha=1",
-                    "--network_args='conv_div=64' 'conv_alpha=1' 'algo=lora'"
+                    "--network_args \"conv_div=64\" \"conv_alpha=1\" \"algo=lora\""
                 ]
             }
         },
@@ -60,7 +60,7 @@
             "Adafactor": {
                 "options": [
                     "--optimizer_type=Adafactor",
-                    "--optimizer_args='relative_step=True' 'scale_parameter=True' 'warmup_init=True'",
+                    "--optimizer_args=\"relative_step=True\" \"scale_parameter=True\" \"warmup_init=True\"",
                     "--lr_scheduler=cosine_with_restarts",
                     "--lr_scheduler_num_cycles=4",
                     "--lr_warmup_steps=500"
@@ -83,22 +83,7 @@
                     "--optimizer_type=Lion"
                 ]
             }
-        },
-        "Lora3x3+Adafactor": [
-            "--optimizer_type=Adafactor",
-            "--optimizer_args='relative_step=True' 'scale_parameter=True' 'warmup_init=True'",
-            "--network_module=networks.lora",
-            "--network_args='conv_div=128' 'conv_alpha=64",
-            "--mixed_precision=fp16",
-            "--prior_loss_weight=1.0",
-            "--gradient_checkpointing",
-            "--network_dim=128",
-            "--network_alpha=128",
-            "--lr_scheduler=cosine_with_restarts",
-            "--lr_scheduler_num_cycles=4",
-            "--caption_dropout_rate=0.05",
-            "--lr_warmup_steps=500"
-        ]
+        }
     },
     "sample": {
         "default_prompt": "best quality, masterpiece",
