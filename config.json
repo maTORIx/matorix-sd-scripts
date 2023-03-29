@@ -7,25 +7,73 @@
         "batch_size": 3,
         "steps": 5000,
         "train_dataset_iter_times": 10,
-        "regularization_dataset_iter_times": 1
-    },
-    "training_types": {
-        "Lora+Adafactor": [
-            "--optimizer_type=Adafactor",
-            "--optimizer_args='relative_step=True' 'scale_parameter=True' 'warmup_init=True'",
+        "regularization_dataset_iter_times": 1,
+        "fliplr_aug": true,
+        "color_aug": true,
+        "random_crop": false,
+        "shuffle_caption": true,
+        "caption_dropout_rate": 0.05,
+        "xformers": true,
+        "options": [
             "--prior_loss_weight=1.0",
             "--mixed_precision=fp16",
-            "--gradient_checkpointing",
-            "--network_module=networks.lora",
-            "--color_aug",
-            "--network_dim=128",
-            "--network_alpha=128",
-            "--lr_scheduler=cosine_with_restarts",
-            "--lr_scheduler_num_cycles=4",
-            "--shuffle_caption",
-            "--caption_dropout_rate=0.05",
-            "--lr_warmup_steps=500"
-        ],
+            "--gradient_checkpointing"
+        ]
+    },
+    "training_types": {
+        "networks": {
+            "LoRA": {
+                "options": [
+                    "--network_module=networks.lora",
+                    "--network_dim=128",
+                    "--network_alpha=64"
+                ]
+            },
+            "LoRA3x3": {
+                "options": [
+                    "--network_module=networks.lora",
+                    "--network_dim=64",
+                    "--network_alpha=1",
+                    "--network_args='conv_div=64' 'conv_alpha=1'"
+                ]
+            },
+            "LoHA": {
+                "options": [
+                    "--network_module=lycoris.kohya",
+                    "--network_dim=32",
+                    "--network_alpha=1",
+                    "--network_args='conv_div=32' 'conv_alpha=1' 'algo=loha'"
+                ]
+            },
+            "LoCon": {
+                "options": [
+                    "--network_module=lycoris.kohya",
+                    "--network_dim=64",
+                    "--network_alpha=1",
+                    "--network_args='conv_div=64' 'conv_alpha=1' 'algo=lora'"
+                ]
+            }
+        },
+        "optimizers": {
+            "Adafactor": {
+                "args": [
+                    "relative_step=True",
+                    "scale_parameter=True",
+                    "warmup_init=True"
+                ],
+                "options": [
+                    "--lr_scheduler=cosine_with_restarts",
+                    "--lr_scheduler_num_cycles=4",
+                    "--lr_warmup_steps=500"
+                ]
+            },
+            "AdamW8bit": {
+                "args": [],
+                "options": [
+                    "--lr_scheduler=cosine_with_restarts"
+                ]
+            }
+        },
         "Lora3x3+Adafactor": [
             "--optimizer_type=Adafactor",
             "--optimizer_args='relative_step=True' 'scale_parameter=True' 'warmup_init=True'",
@@ -33,13 +81,11 @@
             "--network_args='conv_div=128' 'conv_alpha=64",
             "--mixed_precision=fp16",
             "--prior_loss_weight=1.0",
-            "--color_aug",
             "--gradient_checkpointing",
             "--network_dim=128",
             "--network_alpha=128",
             "--lr_scheduler=cosine_with_restarts",
             "--lr_scheduler_num_cycles=4",
-            "--shuffle_caption",
             "--caption_dropout_rate=0.05",
             "--lr_warmup_steps=500"
         ]
