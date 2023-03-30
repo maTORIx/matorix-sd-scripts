@@ -2,7 +2,7 @@ accelerate launch --num_cpu_threads_per_process 1 train_network.py
     --pretrained_model_name_or_path="{{ values["sd_path"] }}"
     --dataset_config="{{ values["toml_path"] }}"
     --output_dir="{{ values["dst"] }}"
-    --output_name="{{ values["model_name"] }}"
+    --output_name="{{ values["model_name"] + "." + values["network"] }}"
     --save_model_as="{{ CONFIG["save_model_as"] }}"
     --max_train_steps={{ values["steps"] }}
     --learning_rate={{ values["learning_rate"] }}
