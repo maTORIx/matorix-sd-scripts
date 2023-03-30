@@ -26,8 +26,6 @@ URLを開いて、右クリックのメニューから「名前をつけて保�
 
 `start.bat`から起動できます。
 
-
-
 ## Install
 ```
 $ ../path/to/sd-scripts/venv/Scripts/activate
@@ -37,6 +35,9 @@ $ pip install onnxruntime
 $ ./setup.bat
 $ ./start.bat
 ```
+
+## Update
+`setup.bat`を実行してください。
 
 ## Help
 
