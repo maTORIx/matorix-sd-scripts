@@ -10,12 +10,10 @@ if not "%DIR_NAME%"=="%TARGET_DIR%" (
 )
 
 cd %DIR_PATH%
-call venv/Scripts/activate
 cd ..
 if not exist "matorix-sd-scripts" git clone https://github.com/matorix/matorix-sd-scripts
 cd matorix-sd-scripts
 git pull
-pip install -r requirements.txt
 call setup.bat
 
 exit /b 0
