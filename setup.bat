@@ -1,5 +1,7 @@
 cd /d %~dp0
 
+git pull
+
 set CONFIG_FILE=config.json
 set JSON_KEY=sd_scripts_path
 if not exist "%CONFIG_FILE%" (
