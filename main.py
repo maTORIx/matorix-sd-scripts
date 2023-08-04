@@ -227,7 +227,7 @@ def run():
     
     # generate prompt for generate sample
     if values["Identifier"] != "":
-        prompt = f"""{values["Identifier"]} {values["Class"]}, {CONFIG["sample"]["default_prompt"]} --n {CONFIG["sample"]["default_negative_prompt"]}"""
+        prompt = f"""{values["Identifier"]}, {values["Class"]}, {CONFIG["sample"]["default_prompt"]} --n {CONFIG["sample"]["default_negative_prompt"]}"""
     else:
         caption_file_path = list(glob.glob(os.path.join(values["train_img_dst"], "*.txt")))[0]
         with open(caption_file_path, "r") as f:
