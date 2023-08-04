@@ -18,8 +18,9 @@
         "optimizer": "Adafactor",
         "options": [
             "--prior_loss_weight=1.0",
-            "--mixed_precision=fp16",
-            "--gradient_checkpointing"
+            "--mixed_precision=bf16",
+            "--gradient_checkpointing",
+            "--max_grad_norm=0"
         ]
     },
     "training_types": {
@@ -27,8 +28,15 @@
             "LoRA": {
                 "options": [
                     "--network_module=networks.lora",
-                    "--network_dim=128",
-                    "--network_alpha=64"
+                    "--network_dim=32",
+                    "--network_alpha=4"
+                ]
+            },
+            "LoRA_Large": {
+                "options": [
+                    "--network_module=networks.lora",
+                    "--network_dim=256",
+                    "--network_alpha=128"
                 ]
             },
             "LoRA3x3": {
@@ -60,10 +68,10 @@
             "Adafactor": {
                 "options": [
                     "--optimizer_type=Adafactor",
-                    "--optimizer_args \"relative_step=True\" \"scale_parameter=True\" \"warmup_init=True\"",
-                    "--lr_scheduler=cosine_with_restarts",
+                    "--optimizer_args \"relative_step=False\" \"scale_parameter=False\" \"warmup_init=False\"",
+                    "--lr_scheduler=constant_with_warmup",
                     "--lr_scheduler_num_cycles=4",
-                    "--lr_warmup_steps=500"
+                    "--lr_warmup_steps=300"
                 ]
             },
             "AdamW": {
@@ -88,17 +96,17 @@
     "sample": {
         "default_prompt": "best quality, masterpiece",
         "default_negative_prompt": "low quality, bad quality",
-        "sampler": "ddim",
-        "interval_steps": 500
+        "sampler": "euler_a",
+        "interval_steps": 100,
+        "samplers": ["euler_a","ddim","pndm","lms","euler","heun","dpm_2","dpm_2_a","dpmsolver","dpmsolver++","dpmsingle","k_lms","k_euler","k_euler_a","k_dpm_2","k_dpm_2_a"]
     },
     "tagger": {
         "blip_batch_size": 4,
         "caption_batch_size": 4
     },
     "generator": {
-        "batch_size": 4,
-        "sampler": "ddim",
-        "steps": 20,
+        "batch_size": 1,
+        "steps": 28,
         "default_prompt": "",
         "default_negative_prompt": ""
     }

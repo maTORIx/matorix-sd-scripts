@@ -1,20 +1,20 @@
 [general]
-enable_bucket = {{ "true" if values["enable_bucket"] else "false" }}
+enable_bucket = {{ "true" if values["Enable image ratio bucket"] else "false" }}
 
 [[datasets]]
-resolution = 512
-batch_size = {{ values["batch_size"] }}
+resolution = {% if values["Is SDXL"] %}1024{% else %}512{% endif %}
+batch_size = {{ values["Batch Size"] }}
 
     [[datasets.subsets]]
     image_dir = '{{ values["train_img_dst"] }}'
     num_repeats = {{ CONFIG["training_default_args"]["train_dataset_iter_times"] }}
-{% if values["identifier"] != "" %}    class_tokens = '{{ values["identifier"] }} {{ values["class"] }}'
+{% if values["Identifier"] != "" %}    class_tokens = '{{ values["Identifier"] }}, {{ values["Class"] }}'
 {% else %}    caption_extension = '.txt'
 {% endif %}
-{% if values["reg_count"] > 0 %}
+{% if values["Regularization images count"] > 0 %}
     [[datasets.subsets]]
     is_reg = true
     image_dir = '{{ values["reg_img_dst"] }}'
-    class_tokens = '{{ values["class"] }}'
+    class_tokens = '{{ values["Class"] }}'
     num_repeats = {{ CONFIG["training_default_args"]["regularization_dataset_iter_times"] }}
 {% endif %}
