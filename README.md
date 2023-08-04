@@ -36,6 +36,13 @@ $ ./setup.bat
 $ ./start.bat
 ```
 
+SDXLで使用する場合は、sd_scriptsのディレクトリ以下で、下記のコマンドを実行してください。
+```
+git fetch origin
+git checkout sdxl
+```
+なお、sd_scripts側で完全にSDXL対応が済んだ場合、この手順は不要になります。これは、暫定的な処置です。
+
 ## Update
 `setup.bat`を実行してください。
 
