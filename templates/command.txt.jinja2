@@ -1,15 +1,14 @@
-accelerate launch --num_cpu_threads_per_process 1 {% if values["Is SDXL"] %}sdxl_train_network.py{% else %}train_network.py{% endif %}
+accelerate launch --num_cpu_threads_per_process {{CONFIG["training_default_args"]["num_cpu_threads"]}} {% if values["Is SDXL"] %}sdxl_train_network.py{% else %}train_network.py{% endif %}
     --pretrained_model_name_or_path="{{ values["StableDiffusion Model Path"] }}"
     --dataset_config="{{ values["toml_path"] }}"
     --output_dir="{{ values["dst"] }}"
     --output_name="{{ values["Model Name"] + "-" + values["Network"] }}"
     --save_model_as="{{ CONFIG["save_model_as"] }}"
     --max_train_steps={{ values["Steps"] }}
-    --learning_rate={{ values["Learning Rate"] }}
     --sample_every_n_steps={{ CONFIG["sample"]["interval_steps"]}}
     --sample_prompts="{{ values["sample_prompt_path"] }}"
     --sample_sampler={{ values["sampler"]}}
-    --resolution="1024,1024"
+    --resolution="{% if values["Is SDXL"] %}1024,1024{% else %}512,512{% endif %}"
     {% for option in CONFIG["training_default_args"]["options"] %}{{ option }}
     {% endfor %}
     {% for option in CONFIG["training_types"]["networks"][values["Network"]]["options"] %}{{ option }}
@@ -17,6 +16,8 @@ accelerate launch --num_cpu_threads_per_process 1 {% if values["Is SDXL"] %}sdxl
     {% for option in CONFIG["training_types"]["optimizers"][values["Optimizer"]]["options"] %}{{ option }}
     {% endfor %}
     {% if values["xformers"] %}--xformers{% endif %}
+    {% if values["Is SDXL"] %}--no_half_vae{% endif %}
+    {% if values["torch 2.0"] %}--xformers{% endif %}
     {% if values["Flip LR"] %}--flip_aug{% endif %}
     {% if values["Color Aug"] %}--color_aug{% endif %}
     {% if values["Shuffle Caption"] %}--shuffle_caption{% endif %}

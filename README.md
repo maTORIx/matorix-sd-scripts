@@ -24,7 +24,9 @@ URLを開いて、右クリックのメニューから「名前をつけて保�
 
 これでインストールは完了です。
 
-`start.bat`から起動できます。
+`sd-scripts`の親フォルダの中に、`matorix-sd-scripts`が追加されています。
+
+`matorix-sd-scripts/start.bat`から起動できます。
 
 ## Install
 ```
@@ -55,6 +57,23 @@ git checkout sdxl
 - https://huggingface.co/SmilingWolf/wd-v1-4-swinv2-tagger-v2
 - https://github.com/SmilingWolf/SW-CV-ModelZoo
 
+## 環境によって異なる推奨設定
+### torch 2.xを使用している場合
+sdpaをONにしてください。
+
+### xformersを使用している場合
+torch 2.xと併用できるか確認していません。torch 1.xを使用している場合はONにすると学習速度が向上します。
+
+## Learning Rateの設定方法
+config.json内部でoptimizerごとに設定することが可能です。(デフォルト値はsd_scriptsの推奨設定を参考にしています。)
+training_types.optimizer以下にある各optimizer設定項目のなかで、"--learning_rate"という項目があります。ここに、学習率を設定してください。
+
+## Networkの追加方法
+config.json内部のtraining_types.networksに、追加したいネットワークの設定を追記してください。
+
+## その他、学習に関する情報
+wikiを参照してください。色々追記していく予定です。
+[wiki](https://github.com/maTORIx/matorix-sd-scripts/wiki)
 
 ## License
 MIT License

@@ -9,12 +9,13 @@ batch_size = {{ values["Batch Size"] }}
     image_dir = '{{ values["train_img_dst"] }}'
     num_repeats = {{ CONFIG["training_default_args"]["train_dataset_iter_times"] }}
 {% if values["Identifier"] != "" %}    class_tokens = '{{ values["Identifier"] }}, {{ values["Class"] }}'
-{% else %}    caption_extension = '.txt'
+{% endif %}
+{% if not values["Use Identifier Only"] %}    caption_extension = '.txt'
 {% endif %}
 {% if values["Regularization images count"] > 0 %}
     [[datasets.subsets]]
     is_reg = true
     image_dir = '{{ values["reg_img_dst"] }}'
-    class_tokens = '{{ values["Class"] }}'
+    caption_extension = '.txt'
     num_repeats = {{ CONFIG["training_default_args"]["regularization_dataset_iter_times"] }}
 {% endif %}

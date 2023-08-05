@@ -3,22 +3,11 @@
     "output_dir": ".\\outputs",
     "save_model_as": "safetensors",
     "training_default_args": {
-        "learning_rate": 1e-4,
-        "batch_size": 2,
-        "steps": 5000,
+        "num_cpu_threads": 1,
         "train_dataset_iter_times": 10,
         "regularization_dataset_iter_times": 1,
-        "fliplr": true,
-        "color_aug": true,
-        "random_crop": false,
-        "shuffle_caption": true,
-        "caption_dropout_rate": 0.05,
-        "xformers": true,
-        "network": "LoRA",
-        "optimizer": "Adafactor",
         "options": [
-            "--prior_loss_weight=1.0",
-            "--mixed_precision=bf16",
+            "--mixed_precision=fp16",
             "--gradient_checkpointing",
             "--max_grad_norm=0"
         ]
@@ -35,16 +24,56 @@
             "LoRA_Large": {
                 "options": [
                     "--network_module=networks.lora",
-                    "--network_dim=256",
-                    "--network_alpha=128"
+                    "--network_dim=128",
+                    "--network_alpha=64"
                 ]
             },
-            "LoRA3x3": {
+            "LoRA-C3Lier": {
                 "options": [
                     "--network_module=networks.lora",
-                    "--network_dim=64",
+                    "--network_dim=16",
                     "--network_alpha=1",
-                    "--network_args \"conv_div=64\" \"conv_alpha=1\""
+                    "--network_args \"conv_dim=4\" \"conv_alpha=1\""
+                ]
+            },
+            "LoRA-C3Lier-Large": {
+                "options": [
+                    "--network_module=networks.lora",
+                    "--network_dim=32",
+                    "--network_alpha=1",
+                    "--network_args \"conv_dim=8\" \"conv_alpha=16\""
+                ]
+            },
+            "DyLoRA": {
+                "options": [
+                    "--network_module=networks.dylora",
+                    "--network_dim=16",
+                    "--network_alpha=1",
+                    "--network_args \"unit=4\""
+                ]
+            },
+            "DyLoRA-Large": {
+                "options": [
+                    "--network_module=networks.dylora",
+                    "--network_dim=32",
+                    "--network_alpha=16",
+                    "--network_args \"unit=8\""
+                ]
+            },
+            "DyLoRA-C3Lier": {
+                "options": [
+                    "--network_module=networks.dylora",
+                    "--network_dim=16",
+                    "--network_alpha=1",
+                    "--network_args \"unit=4\" \"conv_div=16\" \"conv_alpha=1\""
+                ]
+            },
+            "DyLoRA-C3Lier-Large": {
+                "options": [
+                    "--network_module=networks.dylora",
+                    "--network_dim=32",
+                    "--network_alpha=1",
+                    "--network_args \"unit=8\" \"conv_div=32\" \"conv_alpha=16\""
                 ]
             },
             "LoHA": {
@@ -52,7 +81,7 @@
                     "--network_module=lycoris.kohya",
                     "--network_dim=32",
                     "--network_alpha=1",
-                    "--network_args \"conv_div=32\" \"conv_alpha=1\" \"algo=loha\""
+                    "--network_args \"conv_dim=32\" \"conv_alpha=1\" \"algo=loha\""
                 ]
             },
             "LoCon": {
@@ -60,7 +89,7 @@
                     "--network_module=lycoris.kohya",
                     "--network_dim=64",
                     "--network_alpha=1",
-                    "--network_args \"conv_div=64\" \"conv_alpha=1\" \"algo=lora\""
+                    "--network_args \"conv_dim=64\" \"conv_alpha=1\" \"algo=lora\""
                 ]
             }
         },
@@ -68,27 +97,35 @@
             "Adafactor": {
                 "options": [
                     "--optimizer_type=Adafactor",
-                    "--optimizer_args \"relative_step=False\" \"scale_parameter=False\" \"warmup_init=False\"",
-                    "--lr_scheduler=constant_with_warmup",
-                    "--lr_scheduler_num_cycles=4",
+                    "--optimizer_args \"relative_step=True\" \"scale_parameter=True\" \"warmup_init=True\"",
                     "--lr_warmup_steps=300"
+                ]
+            },
+            "DAdaptation": {
+                "options": [
+                    "--learning_rate=1.0",
+                    "--optimizer_type=DAdaptation",
+                    "--lr_scheduler=cosine_with_restarts"
                 ]
             },
             "AdamW": {
                 "options": [
+                    "--learning_rate=1e-4",
                     "--optimizer_type=AdamW",
                     "--lr_scheduler=cosine_with_restarts"
                 ]
             },
             "AdamW8bit": {
                 "options": [
+                    "--learning_rate=1e-4",
                     "--optimizer_type=AdamW8bit",
                     "--lr_scheduler=cosine_with_restarts"
                 ]
             },
             "Lion": {
                 "options": [
-                    "--optimizer_type=Lion"
+                    "--optimizer_type=Lion",
+                    "--lr_scheduler=cosine_with_restarts"
                 ]
             }
         }
@@ -107,7 +144,7 @@
     "generator": {
         "batch_size": 1,
         "steps": 28,
-        "default_prompt": "",
-        "default_negative_prompt": ""
+        "default_prompt": "best quality",
+        "default_negative_prompt": "low quality, bad quality"
     }
 }

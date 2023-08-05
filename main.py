@@ -111,26 +111,25 @@ add_path_entry("StableDiffusion Model Path")
 add_path_entry("VAE Path")
 add_label("Training Options")
 add_entry("Steps", "int", 6000)
-add_entry("Batch Size", "int", 4)
-add_entry("Learning Rate", "double", 1e-4)
+add_entry("Batch Size", "int", 1)
 add_checkbox("Train U-Net Only")
 add_checkbox("Enable image ratio bucket")
 add_checkbox("Cache latents")
-add_checkbox("xformers")
 add_option_menu("Network", CONFIG["training_types"]["networks"].keys())
 add_option_menu("Optimizer", CONFIG["training_types"]["optimizers"].keys())
+add_checkbox("torch 2.0")
+add_checkbox("xformers")
 add_entry("Caption Dropout Rate", "double")
 add_checkbox("Suffle Caption")
-add_option_menu("Network", CONFIG["training_types"]["networks"].keys())
 add_entry("Identifier")
+add_checkbox("Use Identifier Only")
 add_entry("Class")
 add_entry("Regularization images count", "int", -1)
+add_option_menu("sampler", CONFIG["sample"]["samplers"])
 add_label("Augmentation")
 add_checkbox("Flip LR")
 add_checkbox("Color Aug")
 add_checkbox("Random Crop")
-add_label("Sample output")
-add_option_menu("sampler", CONFIG["sample"]["samplers"])
 
 def get_values():
     values = {k: v.get() for k, v in tk_values.items()}
@@ -168,34 +167,41 @@ def run():
 
     # setup datasets
     tagimg.tagimg(values["Image Source Directory"], values["train_img_dst"])
+    
+    # generate images
     if values["Regularization images count"] > 0:
         os.makedirs(values["reg_img_dst"], exist_ok=True)
         if values["Class"] == "":
-            if (values["Is SDXL"]):
-                generate_image.transparent_img(values["reg_img_dst"], values["Regularization images count"], 1024, 1024)
-            else:
-                generate_image.transparent_img(values["reg_img_dst"], values["Regularization images count"])
+            prompts = generate_image.get_prompts_from_dir(
+                values["train_img_dst"],
+                values["Regularization images count"],
+                CONFIG["generator"]["default_prompt"],
+                CONFIG["generator"]["default_negative_prompt"]
+            )
         else:
-            if (values["Is SDXL"]):
-                generate_image.txt2img_sdxl(
-                    model_path=values["StableDiffusion Model Path"],
-                    vae_path=values["VAE Path"],
-                    sampler=values["sampler"],
-                    prompt=f"""{values['Class']}, {CONFIG["generator"]["default_prompt"]}""",
-                    negative_prompt=CONFIG["generator"]["default_negative_prompt"],
-                    dst=values["reg_img_dst"],
-                    count=values["Regularization images count"],
-                )
-            else:
-                generate_image.txt2img(
-                    model_path=values["StableDiffusion Model Path"],
-                    vae_path=values["VAE Path"],
-                    sampler=values["sampler"],
-                    prompt=f"""{values['Class']}, {CONFIG["generator"]["default_prompt"]}""",
-                    negative_prompt=CONFIG["generator"]["default_negative_prompt"],
-                    dst=values["reg_img_dst"],
-                    count=values["Regularization images count"],
-                )
+            prompt = generate_image.join_prompt(
+                values["Class"],
+                CONFIG["generator"]["default_prompt"],
+                CONFIG["generator"]["default_negative_prompt"]
+            )
+            prompts = [prompt] * values["Regularization images count"]
+
+        if (values["Is SDXL"]):
+            generate_image.txt2img_sdxl(
+                dst=values["reg_img_dst"],
+                model_path=values["StableDiffusion Model Path"],
+                vae_path=values["VAE Path"],
+                sampler=values["sampler"],
+                prompts=prompts
+            )
+        else:
+            generate_image.txt2img(
+                dst=values["reg_img_dst"],
+                model_path=values["StableDiffusion Model Path"],
+                vae_path=values["VAE Path"],
+                sampler=values["sampler"],
+                prompts=prompts
+            )
     
     # generate config.toml
     with open(os.path.join(BASE_DIR, "templates", "config.toml.jinja2"), "r") as f:
@@ -226,15 +232,17 @@ def run():
         f.write(script)
     
     # generate prompt for generate sample
-    if values["Identifier"] != "":
-        prompt = f"""{values["Identifier"]}, {values["Class"]}, {CONFIG["sample"]["default_prompt"]} --n {CONFIG["sample"]["default_negative_prompt"]}"""
-    else:
+    words = [values["Identifier"], values["Class"]]
+    if not values["Use Identifier Only"]:
         caption_file_path = list(glob.glob(os.path.join(values["train_img_dst"], "*.txt")))[0]
         with open(caption_file_path, "r") as f:
             caption = f.read()
-        prompt = f"""{CONFIG["sample"]["default_prompt"]}, {caption} --n {CONFIG["sample"]["default_negative_prompt"]}"""
-    prompts = filter(lambda x: x != "", prompt.replace("\n", "").split(","))
-    prompt = (", ").join([s.strip() for s in prompts])
+        words.append(caption)
+    prompt = generate_image.join_prompt(
+        ", ".join(filter(lambda x: x != "", words)),
+        CONFIG["sample"]["default_prompt"],
+        CONFIG["sample"]["default_negative_prompt"]
+    )
     with open(os.path.join(values["sample_prompt_path"]), "w", encoding="utf-8") as f:
         f.write(prompt)
     
