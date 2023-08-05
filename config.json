@@ -9,7 +9,8 @@
         "options": [
             "--mixed_precision=fp16",
             "--gradient_checkpointing",
-            "--max_grad_norm=0"
+            "--max_grad_norm=0",
+            "--no_half_vae"
         ]
     },
     "training_types": {

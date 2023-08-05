@@ -16,8 +16,7 @@ accelerate launch --num_cpu_threads_per_process {{CONFIG["training_default_args"
     {% for option in CONFIG["training_types"]["optimizers"][values["Optimizer"]]["options"] %}{{ option }}
     {% endfor %}
     {% if values["xformers"] %}--xformers{% endif %}
-    {% if values["Is SDXL"] %}--no_half_vae{% endif %}
-    {% if values["torch 2.0"] %}--xformers{% endif %}
+    {% if values["torch 2.0"] %}--sdpa{% endif %}
     {% if values["Flip LR"] %}--flip_aug{% endif %}
     {% if values["Color Aug"] %}--color_aug{% endif %}
     {% if values["Shuffle Caption"] %}--shuffle_caption{% endif %}
