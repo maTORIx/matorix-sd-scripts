@@ -97,9 +97,9 @@
         "optimizers": {
             "Adafactor": {
                 "options": [
-                    "--optimizer_type=Adafactor",
+                    "--optimizer_type=AdaFactor",
                     "--optimizer_args \"relative_step=True\" \"scale_parameter=True\" \"warmup_init=True\"",
-                    "--lr_warmup_steps=300"
+                    "--lr_scheduler_num_cycles=4"
                 ]
             },
             "DAdaptation": {
