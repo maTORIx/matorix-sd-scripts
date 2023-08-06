@@ -13,6 +13,10 @@ https://github.com/kohya-ss/sd-scripts における前処理を行うための�
 
 *生成したファイルは、`matorix-sd-scripts/outputs`以下に保存されます。*
 
+<p align="center">
+<img src="https://github.com/maTORIx/matorix-sd-scripts/assets/28590114/81cce34d-0e29-43a7-979c-e6c7ca8405b2" width="400" />
+</p>
+
 ## Easy Install
 https://raw.githubusercontent.com/maTORIx/matorix-sd-scripts/master/install.bat
 
