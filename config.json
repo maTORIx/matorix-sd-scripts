@@ -16,7 +16,7 @@
     "sample": {
         "default_prompt": "best quality, masterpiece",
         "default_negative_prompt": "low quality, bad quality",
-        "interval_steps": 100
+        "interval_steps": 500
     },
     "tagger": {
         "blip_batch_size": 4,
