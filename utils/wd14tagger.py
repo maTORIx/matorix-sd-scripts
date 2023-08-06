@@ -7,7 +7,7 @@ import onnxruntime as rt
 import pandas as pd
 from PIL import Image
 import importlib
-from utils.config import BASE_DIR
+from utils.settings import BASE_DIR
 from SW_CV_ModelZoo.Utils import dbimutils
 
 dim = 448

@@ -2,23 +2,18 @@ accelerate launch --num_cpu_threads_per_process {{CONFIG["training_default_args"
     --pretrained_model_name_or_path="{{ values["StableDiffusion Model Path"] }}"
     --dataset_config="{{ values["toml_path"] }}"
     --output_dir="{{ values["dst"] }}"
-    --output_name="{{ values["Model Name"] + "-" + values["Network"] }}"
+    --output_name="{{ values["Model Name"] }}"
     --save_model_as="{{ CONFIG["save_model_as"] }}"
-    --max_train_steps={{ values["Steps"] }}
     --sample_every_n_steps={{ CONFIG["sample"]["interval_steps"]}}
     --sample_prompts="{{ values["sample_prompt_path"] }}"
-    --sample_sampler={{ values["sampler"]}}
-    --resolution="{% if values["Is SDXL"] %}1024,1024{% else %}512,512{% endif %}"
-    {% for option in CONFIG["training_default_args"]["options"] %}{{ option }}
+    --resolution="{% if values["Is SDXL"] %}1024{% else %}512{% endif %}"
+    {% for option in OPTIONS["default"] %}{{ option }}
     {% endfor %}
-    {% for option in CONFIG["training_types"]["networks"][values["Network"]]["options"] %}{{ option }}
+    {% for label, v in OPTIONS["values"].items() %}{{ v["option"] }}="{{ values[label] }}"
     {% endfor %}
-    {% for option in CONFIG["training_types"]["optimizers"][values["Optimizer"]]["options"] %}{{ option }}
+    {% for label, option in OPTIONS["flags"].items() %}{% if values[label] %}{{ option }}
+    {% endif %}{% endfor %}
+    {% for label, v in OPTIONS["selects"].items() %}{{ v["option"] }}="{{ values[label] }}"
     {% endfor %}
-    {% if values["xformers"] %}--xformers{% endif %}
-    {% if values["torch 2.0"] %}--sdpa{% endif %}
-    {% if values["Flip LR"] %}--flip_aug{% endif %}
-    {% if values["Color Aug"] %}--color_aug{% endif %}
-    {% if values["Shuffle Caption"] %}--shuffle_caption{% endif %}
-    {% if values["Cache Latents"] %}--cache_latents{% endif %}
-    {% if values["Identifier"] != "" %}--caption_dropout_rate={{ values["Caption Dropout Rate"] }}{% endif %}
+    {% for label, v in OPTIONS["types"].items() %}{% for option in v[values[label]]["options"] %}{{ option }}
+    {% endfor %}{% endfor %}

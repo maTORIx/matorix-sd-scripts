@@ -3,6 +3,7 @@ import json
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 CONFIG_PATH = os.path.join(BASE_DIR, "config.json")
+TRAINING_OPTION_PATH = os.path.join(BASE_DIR, "options.json")
 
 def load_config():
     with open(CONFIG_PATH, "r") as f:
@@ -18,4 +19,10 @@ def load_config():
         os.makedirs(data["output_dir"])
     return data
 
+def load_training_options():
+    with open(TRAINING_OPTION_PATH, "r") as f:
+        data = json.load(f)
+    return data
+
 CONFIG = load_config()
+TRAINING_OPTIONS = load_training_options()

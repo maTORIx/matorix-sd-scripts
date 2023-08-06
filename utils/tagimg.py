@@ -3,7 +3,7 @@ import sys
 import shutil
 from glob import glob
 import tqdm
-from utils.config import CONFIG
+from utils.settings import CONFIG
 from utils import wd14tagger
 
 SD_SCRIPTS_PATH = CONFIG["sd_scripts_path"]
@@ -26,19 +26,27 @@ def copy_images(src, dst):
         filename = os.path.basename(image)
         shutil.copy(image, os.path.join(dst, f'{i:05d}_{filename}'))
 
-def caption_blip(dir):
+def caption_blip(dir, identifier):
     # exec shell command
     os.system(f'python {BLIP_SCRIPT_PATH} --batch_size {CONFIG["tagger"]["blip_batch_size"]} "{dir}"')
+    for path in glob(os.path.join(dir, "*.caption")):
+        with open(path, "r") as f:
+            caption = f.read()
+        with open(path, "w") as f:
+            if identifier and identifier != "":
+                f.write(identifier + ", ")
+            f.write(caption)
 
-def caption_wd14(dir):
+def caption_wd14(dir, identifier=""):
     print("Generating captions with WD14 model")
     images = find_images(dir)
     for image_path in tqdm.tqdm(images):
         tags = wd14tagger.generate_tags(image_path)
         caption_path = os.path.join(dir, os.path.splitext(os.path.basename(image_path))[0] + ".txt")
         with open(caption_path, "w") as f:
+            if identifier and identifier != "":
+                f.write(identifier + ", ")
             f.write(", ".join(tags))
-
 
 def merge_captions(dir):
     # exec shell command
@@ -52,11 +60,11 @@ def clearning_captions(dir):
     save_json_path = os.path.join(dir, "meta_clean.json")
     os.system(f'python {CLEANING_SCRIPT_PATH} "{load_json_path}" "{save_json_path}"')
 
-def tagimg(src, dst):
+def tagimg(src, dst, identifier=""):
     os.chdir(SD_SCRIPTS_PATH)
     copy_images(src, dst)
-    caption_blip(dst)
-    caption_wd14(dst)
+    caption_blip(dst, identifier)
+    caption_wd14(dst, identifier)
     merge_captions(dst)
     clearning_captions(dst)
 

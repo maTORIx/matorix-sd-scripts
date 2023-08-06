@@ -4,7 +4,7 @@ import glob
 import tkinter as tk
 from tkinter import ttk
 from tkinter import filedialog
-from utils.config import CONFIG, BASE_DIR
+from utils.settings import CONFIG, BASE_DIR, TRAINING_OPTIONS
 from utils import tagimg, generate_image, cache
 import jinja2
 import typing
@@ -103,33 +103,49 @@ def add_label(text: str):
     label = tk.Label(root, text=text)
     label.grid(row=row, column=0, sticky="w")
 
+def add_from_training_options(category, label):
+    if category not in TRAINING_OPTIONS or label not in TRAINING_OPTIONS[category]:
+        raise ValueError(f"Invalid category: {category} or label: {label}")
+    option = TRAINING_OPTIONS[category][label]
+    if category == "flags":
+        add_checkbox(label)
+    elif category == "values":
+        add_entry(label, option["type"], option.get("default", None))
+    elif category == "selects":
+        add_option_menu(label, option["values"])
+    elif category == "types":
+        add_option_menu(label, option.keys())
+    else:
+        raise ValueError(f"Invalid category: {category}")
+
 # model name
 add_entry("Model Name")
 add_checkbox("Is SDXL")
 add_path_entry("Image Source Directory", dir=True)
 add_path_entry("StableDiffusion Model Path")
 add_path_entry("VAE Path")
-add_label("Training Options")
-add_entry("Steps", "int", 6000)
+add_label("Training options")
+add_from_training_options("values", "steps")
 add_entry("Batch Size", "int", 1)
-add_checkbox("Train U-Net Only")
-add_checkbox("Enable image ratio bucket")
-add_checkbox("Cache latents")
-add_option_menu("Network", CONFIG["training_types"]["networks"].keys())
-add_option_menu("Optimizer", CONFIG["training_types"]["optimizers"].keys())
-add_checkbox("torch 2.0")
-add_checkbox("xformers")
-add_entry("Caption Dropout Rate", "double")
-add_checkbox("Suffle Caption")
+add_from_training_options("flags", "Train U-Net only")
+add_from_training_options("flags", "Enable image ratio bucket")
+add_from_training_options("flags", "Cache latents")
+add_from_training_options("types", "network")
+add_from_training_options("types", "optimizer")
+add_from_training_options("flags", "torch 2.0")
+add_from_training_options("flags", "xformers")
+add_from_training_options("values", "Caption dropout rate")
+add_from_training_options("selects", "max token length")
+add_from_training_options("flags", "shuffle caption")
 add_entry("Identifier")
 add_checkbox("Use Identifier Only")
 add_entry("Class")
 add_entry("Regularization images count", "int", -1)
-add_option_menu("sampler", CONFIG["sample"]["samplers"])
+add_from_training_options("selects", "sampler")
 add_label("Augmentation")
-add_checkbox("Flip LR")
-add_checkbox("Color Aug")
-add_checkbox("Random Crop")
+add_from_training_options("flags", "Flip LR")
+add_from_training_options("flags", "Color aug")
+add_from_training_options("flags", "Random crop")
 
 def get_values():
     values = {k: v.get() for k, v in tk_values.items()}
@@ -141,8 +157,8 @@ def get_values():
     if values["Model Name"] == "":
         raise ValueError("Model Name cannot be empty")
     if values["Regularization images count"] == "":
-        values["Regularization images count"] = -1
-    
+        values["Regularization images count"] = 0 
+    save_cache(values)
 
     if int(values["Regularization images count"]) < 0:
         values["Regularization images count"] = len(tagimg.find_images(values["Image Source Directory"]))
@@ -158,7 +174,6 @@ def save_cache(values):
 
 def run():
     values = get_values()
-    save_cache(values)
 
     # make dst directory
     if os.path.exists(values["dst"]):
@@ -166,7 +181,7 @@ def run():
     os.makedirs(values["dst"], exist_ok=False)
 
     # setup datasets
-    tagimg.tagimg(values["Image Source Directory"], values["train_img_dst"])
+    tagimg.tagimg(values["Image Source Directory"], values["train_img_dst"], values["Identifier"])
     
     # generate images
     if values["Regularization images count"] > 0:
@@ -206,14 +221,14 @@ def run():
     # generate config.toml
     with open(os.path.join(BASE_DIR, "templates", "config.toml.jinja2"), "r") as f:
         template = jinja2.Template(f.read())
-    toml = template.render({"values": values, "CONFIG": CONFIG})
+    toml = template.render({"values": values, "CONFIG": CONFIG, "OPTIONS": TRAINING_OPTIONS})
     with open(values["toml_path"], "w", encoding="utf-8") as f:
         f.write(toml)
 
     # generate command.txt
     with open(os.path.join(BASE_DIR, "templates", "command.txt.jinja2"), "r") as f:
         template = jinja2.Template(f.read())
-    command = template.render({"values": values, "CONFIG": CONFIG})
+    command = template.render({"values": values, "CONFIG": CONFIG, "OPTIONS": TRAINING_OPTIONS})
     command = ("\n").join(filter(lambda line: len(line) > 0, [line.strip() for line in command.splitlines()]))
     with open(os.path.join(values["dst"], "command.txt"), "w", encoding="utf-8") as f:
         f.write(command)

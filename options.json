@@ -1,0 +1,159 @@
+{
+    "default": [
+        "--mixed_precision=fp16",
+        "--gradient_checkpointing",
+        "--max_grad_norm=0",
+        "--no_half_vae"
+    ],
+    "values": {
+        "steps": {
+            "type": "int",
+            "option": "--max_train_steps",
+            "default": 10000
+        },
+        "Caption dropout rate": {
+            "type": "double",
+            "option": "--caption_tag_dropout_rate",
+            "default": 0.0
+        }
+    },
+    "flags": {
+        "torch 2.0": "--sdpa",
+        "xformers": "--xformers",
+        "Train U-Net only": "--network_train_unet_only",
+        "Enable image ratio bucket": "--enable_bucket",
+        "Cache latents": "--cache_latents",
+        "shuffle caption": "--shuffle_caption",
+        "Flip LR": "--flip_aug",
+        "Color aug": "--color_aug",
+        "Random crop": "--random_crop"
+    },
+    "selects": {
+        "sampler": {
+            "option": "--sample_sampler",
+            "values": ["euler_a","ddim","pndm","lms","euler","heun","dpm_2","dpm_2_a","dpmsolver","dpmsolver++","dpmsingle","k_lms","k_euler","k_euler_a","k_dpm_2","k_dpm_2_a"]
+        },
+        "max token length": {
+            "option": "--max_token_length",
+            "values": ["None", "150", "225"]
+        }
+    },
+    "types": {
+        "network": {
+            "LoRA": {
+                "options": [
+                    "--network_module=networks.lora",
+                    "--network_dim=32",
+                    "--network_alpha=4"
+                ]
+            },
+            "LoRA_Large": {
+                "options": [
+                    "--network_module=networks.lora",
+                    "--network_dim=128",
+                    "--network_alpha=64"
+                ]
+            },
+            "LoRA-C3Lier": {
+                "options": [
+                    "--network_module=networks.lora",
+                    "--network_dim=16",
+                    "--network_alpha=1",
+                    "--network_args \"conv_dim=4\" \"conv_alpha=1\""
+                ]
+            },
+            "LoRA-C3Lier-Large": {
+                "options": [
+                    "--network_module=networks.lora",
+                    "--network_dim=32",
+                    "--network_alpha=1",
+                    "--network_args \"conv_dim=8\" \"conv_alpha=16\""
+                ]
+            },
+            "DyLoRA": {
+                "options": [
+                    "--network_module=networks.dylora",
+                    "--network_dim=16",
+                    "--network_alpha=1",
+                    "--network_args \"unit=4\""
+                ]
+            },
+            "DyLoRA-Large": {
+                "options": [
+                    "--network_module=networks.dylora",
+                    "--network_dim=32",
+                    "--network_alpha=16",
+                    "--network_args \"unit=8\""
+                ]
+            },
+            "DyLoRA-C3Lier": {
+                "options": [
+                    "--network_module=networks.dylora",
+                    "--network_dim=16",
+                    "--network_alpha=1",
+                    "--network_args \"unit=4\" \"conv_div=16\" \"conv_alpha=1\""
+                ]
+            },
+            "DyLoRA-C3Lier-Large": {
+                "options": [
+                    "--network_module=networks.dylora",
+                    "--network_dim=32",
+                    "--network_alpha=1",
+                    "--network_args \"unit=8\" \"conv_div=32\" \"conv_alpha=16\""
+                ]
+            },
+            "LoHA": {
+                "options": [
+                    "--network_module=lycoris.kohya",
+                    "--network_dim=32",
+                    "--network_alpha=1",
+                    "--network_args \"conv_dim=32\" \"conv_alpha=1\" \"algo=loha\""
+                ]
+            },
+            "LoCon": {
+                "options": [
+                    "--network_module=lycoris.kohya",
+                    "--network_dim=64",
+                    "--network_alpha=1",
+                    "--network_args \"conv_dim=64\" \"conv_alpha=1\" \"algo=lora\""
+                ]
+            }
+        },
+        "optimizer": {
+            "Adafactor": {
+                "options": [
+                    "--optimizer_type=AdaFactor",
+                    "--optimizer_args \"relative_step=True\" \"scale_parameter=True\" \"warmup_init=True\"",
+                    "--lr_scheduler_num_cycles=4"
+                ]
+            },
+            "DAdaptation": {
+                "options": [
+                    "--learning_rate=1.0",
+                    "--optimizer_type=DAdaptation",
+                    "--lr_scheduler=cosine_with_restarts"
+                ]
+            },
+            "AdamW": {
+                "options": [
+                    "--learning_rate=1e-4",
+                    "--optimizer_type=AdamW",
+                    "--lr_scheduler=cosine_with_restarts"
+                ]
+            },
+            "AdamW8bit": {
+                "options": [
+                    "--learning_rate=1e-4",
+                    "--optimizer_type=AdamW8bit",
+                    "--lr_scheduler=cosine_with_restarts"
+                ]
+            },
+            "Lion": {
+                "options": [
+                    "--optimizer_type=Lion",
+                    "--lr_scheduler=cosine_with_restarts"
+                ]
+            }
+        }
+    }
+}

@@ -1,6 +1,6 @@
 import os
 from PIL import Image
-from utils.config import CONFIG
+from utils.settings import CONFIG
 import glob
 
 GEN_IMG_PATH = os.path.join(CONFIG["sd_scripts_path"], "gen_img_diffusers.py")

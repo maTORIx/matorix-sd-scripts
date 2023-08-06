@@ -1,6 +1,6 @@
 import os
 import json
-from utils.config import BASE_DIR
+from utils.settings import BASE_DIR
 
 CACHE_PATH = os.path.join(BASE_DIR, ".cache.json")
 
