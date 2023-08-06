@@ -28,6 +28,8 @@ URLを開いて、右クリックのメニューから「名前をつけて保�
 
 `matorix-sd-scripts/start.bat`から起動できます。
 
+*このスクリプトによって生成したファイル群は、`matorix-sd-scripts/outputs`以下に保存されます。*
+
 学習を開始するときは、`matorix-sd-scripts/outputs`以下に作成されたディレクトリから`train.bat`を起動してください。
 
 詳細は[wiki](https://github.com/maTORIx/matorix-sd-scripts/wiki/matorix%E2%80%90sd%E2%80%90scripts) に記載しています。
