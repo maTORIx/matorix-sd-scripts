@@ -11,6 +11,7 @@ import typing
 
 ui = None
 
+
 def get_params(values):
     params = values.copy()
     params["dst"] = os.path.join(CONFIG["output_dir"], params["Model Name"])
@@ -150,10 +151,10 @@ def run():
     ui.destroy()
 
 
-
 def main():
     global ui
     ui = setup_ui(cache.load_cache(), TRAINING_OPTIONS, run)
     ui.mainloop()
+
 
 main()
