@@ -3,7 +3,8 @@
         "--mixed_precision=fp16",
         "--gradient_checkpointing",
         "--max_grad_norm=0",
-        "--no_half_vae"
+        "--no_half_vae",
+        "--save_every_n_steps=1000"
     ],
     "values": {
         "steps": {
