@@ -31,9 +31,16 @@ def get_params(values):
     return params
 
 
+def save_cache(values):
+    tmp = values.copy()
+    uncacheable = ["Image Source Directory", "Model Name", "Identifier", "Class"]
+    for key in uncacheable:
+        tmp.pop(key)
+    cache.save_cache(tmp)
+
 def run():
     values = ui.get_values()
-    cache.save_cache(values)
+    save_cache(values)
     params = get_params(values)
 
     # make dst directory
