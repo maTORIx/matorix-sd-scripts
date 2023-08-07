@@ -6,7 +6,7 @@ accelerate launch --num_cpu_threads_per_process {{CONFIG["training_default_args"
     --save_model_as="{{ CONFIG["save_model_as"] }}"
     --sample_every_n_steps={{ CONFIG["sample"]["interval_steps"]}}
     --sample_prompts="{{ values["sample_prompt_path"] }}"
-    --resolution="{% if values["Is SDXL"] %}1024{% else %}512{% endif %}"
+    --resolution="{{ values["resolution"] }}"
     {% for option in OPTIONS["default"] %}{{ option }}
     {% endfor %}
     {% for label, v in OPTIONS["values"].items() %}{{ v["option"] }}="{{ values[label] }}"

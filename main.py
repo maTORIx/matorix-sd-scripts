@@ -28,6 +28,13 @@ def get_params(values):
         params["Regularization images count"] = len(
             tagimg.find_images(params["Image Source Directory"])
         )
+    
+    if params["Image shape"] == "square":
+        params["resolution"] = "1024,1024" if params["Is SDXL"] else "512,512"
+    elif params["Image shape"] == "portrait":
+        params["resolution"] = "896,1152" if params["Is SDXL"] else "448,576"
+    elif params["Image shape"] == "landscape":
+        params["resolution"] = "1152,896" if params["Is SDXL"] else "576,448"
     return params
 
 
