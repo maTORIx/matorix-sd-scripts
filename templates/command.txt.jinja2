@@ -13,6 +13,8 @@ accelerate launch --num_cpu_threads_per_process {{CONFIG["training_default_args"
     {% endif %}
     {% if not values["Is SDXL"] and values["Image shape"] != "square"  %}    --max_bucket_reso=576
     {% endif %}
+    {% if values["Use warmup"] %}    --lr_warmup_steps={{ (values["steps"] * values["Warmup rate"]) | round | int }}
+    {% endif %}
     {% for option in OPTIONS["default"] %}{{ option }}
     {% endfor %}
     {% for label, v in OPTIONS["values"].items() %}{{ v["option"] }}="{{ values[label] }}"
