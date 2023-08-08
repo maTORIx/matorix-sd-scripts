@@ -16,6 +16,11 @@
             "type": "double",
             "option": "--caption_tag_dropout_rate",
             "default": 0.0
+        },
+        "Network dropout rate": {
+            "type": "double",
+            "option": "--network_dropout",
+            "default": 0.0
         }
     },
     "flags": {
@@ -132,28 +137,28 @@
                 "options": [
                     "--learning_rate=1.0",
                     "--optimizer_type=DAdaptation",
-                    "--lr_scheduler=cosine_with_restarts"
+                    "--lr_scheduler=linear"
                 ]
             },
             "AdamW": {
                 "options": [
                     "--learning_rate=4e-6",
                     "--optimizer_type=AdamW",
-                    "--lr_scheduler=cosine_with_restarts"
+                    "--lr_scheduler=linear"
                 ]
             },
             "AdamW8bit": {
                 "options": [
                     "--learning_rate=4e-6",
                     "--optimizer_type=AdamW8bit",
-                    "--lr_scheduler=cosine_with_restarts"
+                    "--lr_scheduler=linear"
                 ]
             },
             "Lion": {
                 "options": [
                     "--learning_rate=1e-4",
                     "--optimizer_type=Lion",
-                    "--lr_scheduler=cosine_with_restarts"
+                    "--lr_scheduler=linear"
                 ]
             }
         }

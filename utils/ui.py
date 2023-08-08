@@ -176,6 +176,7 @@ def setup_ui(cache, TRAINING_OPTIONS, run_func: typing.Callable):
     ui.add_from_training_options("types", "optimizer")
     ui.add_from_training_options("flags", "torch 2.0")
     ui.add_from_training_options("flags", "xformers")
+    ui.add_from_training_options("values", "Network dropout rate")
     ui.add_from_training_options("values", "Caption dropout rate")
     ui.add_from_training_options("selects", "max token length")
     ui.add_from_training_options("flags", "shuffle caption")
