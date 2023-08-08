@@ -2,7 +2,7 @@
 enable_bucket = {{ "true" if values["Enable image ratio bucket"] else "false" }}
 
 [[datasets]]
-resolution = {{ values["resolution"] }}
+resolution = [{{ values["resolution"] }}]
 batch_size = {{ values["Batch Size"] }}
 
     [[datasets.subsets]]

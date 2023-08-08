@@ -7,6 +7,12 @@ accelerate launch --num_cpu_threads_per_process {{CONFIG["training_default_args"
     --sample_every_n_steps={{ CONFIG["sample"]["interval_steps"]}}
     --sample_prompts="{{ values["sample_prompt_path"] }}"
     --resolution="{{ values["resolution"] }}"
+    --logging_dir="{{ values["logdir"] }}"
+    --log_prefix="{{ values["Model Name"] }}"
+    {% if values["Is SDXL"] and values["Image shape"] != "square"  %}    --max_bucket_reso=1152
+    {% endif %}
+    {% if not values["Is SDXL"] and values["Image shape"] != "square"  %}    --max_bucket_reso=576
+    {% endif %}
     {% for option in OPTIONS["default"] %}{{ option }}
     {% endfor %}
     {% for label, v in OPTIONS["values"].items() %}{{ v["option"] }}="{{ values[label] }}"

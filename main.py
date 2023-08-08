@@ -19,6 +19,7 @@ def get_params(values):
     params["reg_img_dst"] = os.path.join(params["dst"], "reg")
     params["toml_path"] = os.path.join(params["dst"], "config.toml")
     params["sample_prompt_path"] = os.path.join(params["dst"], "prompt.txt")
+    params["logdir"] = os.path.join(params["dst"], "logs")
     if params["Model Name"] == "":
         raise ValueError("Model Name cannot be empty")
     if params["Regularization images count"] == "":
@@ -144,7 +145,10 @@ def run():
         f.write(script)
 
     # generate prompt for generate sample
-    words = [params["Identifier"], params["Class"]]
+    words = []
+    if params["Use Identifier Only"]:
+        words.append(params["Identifier"])
+    words.append(params["Class"])
     if not params["Use Identifier Only"]:
         caption_file_path = list(
             glob.glob(os.path.join(params["train_img_dst"], "*.txt"))
@@ -161,6 +165,8 @@ def run():
         f.write(prompt)
 
     # exit app
+    print("You can check the logs during training with the following command.")
+    print(f"""$ tensorboard --logdir="{params["logdir"]}"\n""")
     print("matorix-sd-scripts task finished !")
     ui.destroy()
 
