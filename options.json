@@ -36,7 +36,7 @@
         },
         "max token length": {
             "option": "--max_token_length",
-            "values": ["None", "150", "225"]
+            "values": ["75", "150", "225"]
         }
     },
     "types": {
@@ -137,20 +137,21 @@
             },
             "AdamW": {
                 "options": [
-                    "--learning_rate=1e-4",
+                    "--learning_rate=4e-6",
                     "--optimizer_type=AdamW",
                     "--lr_scheduler=cosine_with_restarts"
                 ]
             },
             "AdamW8bit": {
                 "options": [
-                    "--learning_rate=1e-4",
+                    "--learning_rate=4e-6",
                     "--optimizer_type=AdamW8bit",
                     "--lr_scheduler=cosine_with_restarts"
                 ]
             },
             "Lion": {
                 "options": [
+                    "--learning_rate=1e-4",
                     "--optimizer_type=Lion",
                     "--lr_scheduler=cosine_with_restarts"
                 ]
