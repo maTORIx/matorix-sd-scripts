@@ -1,6 +1,6 @@
 {
     "default": [
-        "--mixed_precision=fp16",
+        "--mixed_precision=bf16",
         "--gradient_checkpointing",
         "--max_grad_norm=0",
         "--no_half_vae",
@@ -15,11 +15,6 @@
         "Caption dropout rate": {
             "type": "double",
             "option": "--caption_tag_dropout_rate",
-            "default": 0.0
-        },
-        "Network dropout rate": {
-            "type": "double",
-            "option": "--network_dropout",
             "default": 0.0
         }
     },
@@ -108,6 +103,16 @@
             }
         },
         "optimizer": {
+            "Prodigy": {
+                "options": [
+                    "--optimizer_type=prodigy",
+                    "--optimizer_args \"weight_decay=0.01\" \"decouple=True\" \"use_bias_correction=True\" \"d_coef=1\"",
+                    "--learning_rate=1.0",
+                    "--lr_scheduler=cosine",
+                    "--unet_lr=1.0",
+                    "--text_encoder_lr=1.0"
+                ]
+            },
             "Adafactor": {
                 "options": [
                     "--optimizer_type=AdaFactor",
@@ -126,21 +131,27 @@
                 "options": [
                     "--learning_rate=4e-6",
                     "--optimizer_type=AdamW",
-                    "--lr_scheduler=linear"
+                    "--lr_scheduler=cosine",
+                    "--network_dropout=0.1",
+                    "--lr_warmup_steps=200"
                 ]
             },
             "AdamW8bit": {
                 "options": [
                     "--learning_rate=4e-6",
                     "--optimizer_type=AdamW8bit",
-                    "--lr_scheduler=linear"
+                    "--lr_scheduler=cosine",
+                    "--network_dropout=0.1",
+                    "--lr_warmup_steps=200"
                 ]
             },
             "Lion": {
                 "options": [
                     "--learning_rate=1e-4",
                     "--optimizer_type=Lion",
-                    "--lr_scheduler=linear"
+                    "--lr_scheduler=cosine",
+                    "--network_dropout=0.1",
+                    "--lr_warmup_steps=200"
                 ]
             }
         }

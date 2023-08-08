@@ -3,3 +3,4 @@ lion-pytorch
 lycoris_lora
 fairscale
 dadaptation
+prodigyopt
