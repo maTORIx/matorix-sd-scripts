@@ -46,6 +46,13 @@
     },
     "types": {
         "network": {
+            "LoRA_Tiny": {
+                "options": [
+                    "--network_module=networks.lora",
+                    "--network_dim=16",
+                    "--network_alpha=2"
+                ]
+            },
             "LoRA": {
                 "options": [
                     "--network_module=networks.lora",
@@ -54,6 +61,13 @@
                 ]
             },
             "LoRA_Large": {
+                "options": [
+                    "--network_module=networks.lora",
+                    "--network_dim=64",
+                    "--network_alpha=32"
+                ]
+            },
+            "LoRA_ExtraLarge": {
                 "options": [
                     "--network_module=networks.lora",
                     "--network_dim=128",
@@ -79,49 +93,17 @@
             "DyLoRA": {
                 "options": [
                     "--network_module=networks.dylora",
-                    "--network_dim=16",
-                    "--network_alpha=1",
-                    "--network_args \"unit=4\""
-                ]
-            },
-            "DyLoRA-Large": {
-                "options": [
-                    "--network_module=networks.dylora",
-                    "--network_dim=32",
-                    "--network_alpha=16",
-                    "--network_args \"unit=8\""
+                    "--network_dim=64",
+                    "--network_alpha=32",
+                    "--network_args \"unit=16\""
                 ]
             },
             "DyLoRA-C3Lier": {
                 "options": [
                     "--network_module=networks.dylora",
-                    "--network_dim=16",
-                    "--network_alpha=1",
-                    "--network_args \"unit=4\" \"conv_div=16\" \"conv_alpha=1\""
-                ]
-            },
-            "DyLoRA-C3Lier-Large": {
-                "options": [
-                    "--network_module=networks.dylora",
-                    "--network_dim=32",
-                    "--network_alpha=1",
-                    "--network_args \"unit=8\" \"conv_div=32\" \"conv_alpha=16\""
-                ]
-            },
-            "LoHA": {
-                "options": [
-                    "--network_module=lycoris.kohya",
-                    "--network_dim=32",
-                    "--network_alpha=1",
-                    "--network_args \"conv_dim=32\" \"conv_alpha=1\" \"algo=loha\""
-                ]
-            },
-            "LoCon": {
-                "options": [
-                    "--network_module=lycoris.kohya",
                     "--network_dim=64",
                     "--network_alpha=1",
-                    "--network_args \"conv_dim=64\" \"conv_alpha=1\" \"algo=lora\""
+                    "--network_args \"unit=16\" \"conv_div=64\" \"conv_alpha=32\""
                 ]
             }
         },
